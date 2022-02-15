@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const getAcess = require("../../Midlewares/acess/index");
 const Rutes = Router();
 const {
   getMascotas,
@@ -9,10 +10,10 @@ const {
   resetMascotas
 } = require("../../Midlewares/mascotas/index");
 
-Rutes.get("/", getMascotas);
-Rutes.post("/", saveMascotas);
-Rutes.delete("/", resetMascotas);
-Rutes.get("/:id", getOneMascota);
-Rutes.put("/:id", updateOneMascota);
-Rutes.delete("/:id", deleteOneMascota);
+Rutes.get("/", getAcess ,getMascotas);
+Rutes.post("/", getAcess,saveMascotas);
+Rutes.delete("/",getAcess ,resetMascotas);
+Rutes.get("/:id", getAcess,getOneMascota);
+Rutes.put("/:id",getAcess ,updateOneMascota);
+Rutes.delete("/:id", getAcess,deleteOneMascota);
 module.exports = Rutes;

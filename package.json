@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --verbose --detectOpenHandles --maxWorkers=1",
-    "start": "cross-env NODE_ENV=production node app.js",
+    "start": "cross-env NODE_ENV=production node app.js ",
     "start_test": "cross-env NODE_ENV=test node app.js",
     "test:watch": "npm run test -- --watch"
   },
@@ -20,6 +20,7 @@
     "cross-env": "7.0.3",
     "dotenv": "16.0.0",
     "express": "4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "6.2.1"
   },
   "devDependencies": {

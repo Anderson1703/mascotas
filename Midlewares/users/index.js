@@ -1,4 +1,5 @@
 const userModel = require("../../Database/models/users/index");
+const mascotasModel = require("../../Database/models/mascotas/index");
 const bcrypt = require("bcrypt");
 const midle = {};
 
@@ -14,7 +15,11 @@ midle.getUser = (req, res) => {
         user: 0,
       });
     op.then((result) => {
+     if (result==null || result== {}) {
+      res.status(404).json({ message: "usuario no existe" });
+     } else {
       res.status(200).json(result);
+     }
     }).catch((err) => {
       console.log(err);
       next({ status: 502 });
@@ -66,12 +71,22 @@ midle.updateUser = (req, res, next) => {
   }
 };
 
+
 midle.deleteUser = (req, res, next) => {
   const { id } = req.params;
+  //eliminar usuario//
   userModel
     .findByIdAndDelete({ _id: id })
-    .then((result) => {
-      res.status(200).json(result);
+    .then(() => {
+      //eliminar todas las mascotas de ese usuario//
+        mascotasModel.deleteMany({user:id},{runValidators:true})
+        .then(result=>{
+          res.status(200).json({eliminado:true});
+        })
+        .catch(error=>{
+          next({ status: 502 });
+          console.log(error);
+        })
     })
     .catch((err) => {
       next({ status: 502 });
