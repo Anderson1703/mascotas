@@ -16,32 +16,32 @@ midle.saveMascotas = (req, res, next) => {
       .then(response => {
         if (response == null || response == {}) {
           res.status(404).json({ message: "usuario no existe" });
-        }else{
+        } else {
           mascotasModel
-          .create(newMascota)
-          .then((result) => {
-            const idMascota = result._id;
-            const mascotasUpdated = [...response.mascotas, idMascota];
-            userModel
-              .findByIdAndUpdate(
-                { _id: data.userId },
-                { mascotas: mascotasUpdated }
-              )
-              .then(() => {
-                res.status(201).json(result);
-              })
-              .catch((err) => {
-                console.log(err);
-                next({ status: 502 });
-              });
-          })
-          .catch((err) => next(err));
+            .create(newMascota)
+            .then((result) => {
+              const idMascota = result._id;
+              const mascotasUpdated = [...response.mascotas, idMascota];
+              userModel
+                .findByIdAndUpdate(
+                  { _id: data.userId },
+                  { mascotas: mascotasUpdated }
+                )
+                .then(() => {
+                  res.status(201).json(result);
+                })
+                .catch((err) => {
+                  console.log(err);
+                  next({ status: 502, data: err });
+                });
+            })
+            .catch((err) => next(err));
         }
 
       })
       .catch((err) => {
         console.log(err);
-        next({ status: 502 });
+        next({ status: 502, data: err });
       });
   } else {
     next({
@@ -66,7 +66,7 @@ midle.getMascotas = (req, res, next) => {
       }
     }).catch((err) => {
       console.log(err);
-      next({ status: 502 });
+      next({ status: 502, data: err });
     });
   } catch (error) {
     console.log(error);
@@ -85,14 +85,14 @@ midle.getOneMascota = (req, res, next) => {
         password: 0,
       });
     op.then((result) => {
-      if (result==null || result== {}) {
+      if (result == null || result == {}) {
         res.status(404).json({ message: "la mascotas no existe" });
-       } else {
+      } else {
         res.status(200).json(result);
-       }
+      }
     }).catch((err) => {
       console.log(err);
-      next({ status: 502 });
+      next({ status: 502, data: err });
     });
   }
 };
@@ -110,7 +110,10 @@ midle.deleteOneMascota = (req, res, next) => {
       .then((result) => {
         res.status(200).json(result);
       })
-      .catch((err) => next(err));
+      .catch((err) => {
+        console.log(err);
+        next({ status: 502, data: err });
+      });
   }
 };
 
@@ -133,7 +136,7 @@ midle.updateOneMascota = (req, res, next) => {
       })
       .catch((err) => {
         console.log(err);
-        next({ status: 502 });
+        next({ status: 502, data: err });
       });
   }
 };
@@ -146,7 +149,7 @@ midle.resetMascotas = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      next({ status: 502 });
+      next({ status: 502, data: err });
     });
 };
 

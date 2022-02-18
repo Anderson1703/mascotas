@@ -1,10 +1,5 @@
-const mongoose = require("mongoose");
 const errorController = (err, req, res, next) => {
-    if (err.code == 11000) {
-        res.status(406).json({
-            mesaage: "el nombre de esta mascota ya existe"
-        });
-    } else if (err.status == 409) {
+    if (err.status == 409) {
         res.status(409).json({
             message: "data incompleta, asegurese de haber enviado los campos obligatorios",
         });
@@ -25,8 +20,14 @@ const errorController = (err, req, res, next) => {
         });
     }
     else if (err.status==502) {
+        if (err.data.code == 11000) {
+            res.status(406).json({
+                mesaage: "Este nombre ya existe"
+            });
+        }
         res.status(502).json({
             message: "respuesta externa inesperada o incorrecta",
+            error:err.data
         });
     }
     else {

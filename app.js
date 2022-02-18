@@ -11,7 +11,6 @@ app.use(cors());
 app.use("/", require("./Rutes/principal/index"));
 app.use("/mascotas", require("./Rutes/mascotas/index"));
 app.use("/users", require("./Rutes/users/index"));
-app.use("/users/login", require("./Rutes/login/index"));
 app.use(errorController);
 
 if (process.env.NODE_ENV !== "test") {
